@@ -2,21 +2,14 @@
 import logging
 
 import telegram
-#from telegram.ext import Updater, MessageHandler, Filters, CallbackQueryHandlery
+from telegram.ext import Updater, MessageHandler, Filters, CallbackQueryHandler
 from telegram.ext import CallbackContext, CommandHandler
-#from telegram import ParseMode, ReplyKeyboardMarkup, Update, InlineKeyboardButton, InlineKeyboardMarkup, ForceReply
-from telegram import ReplyKeyboardMarkup
-from telegram import Update
-from telegram import InlineKeyboardButton
-from telegram import ReplyKeyboardMarkup
-from telegram import ForceReply
-#from telegram import ParseMode, ReplyKeyboardMarkup, Update, InlineKeyboardButton, InlineKeyboardMarkup, ForceReply, ParseMode
-from telegram import Updater, MessageHandler, Filters, CallbackQueryHandler
+from telegram import ParseMode, ReplyKeyboardMarkup, Update, InlineKeyboardButton, InlineKeyboardMarkup, ForceReply, ParseMode
+
 from game import Game
 import settings
-
+import sqlite3 as sql
 rating_dict = {}
-
 logger = None
 
 games = {}
