@@ -5,7 +5,7 @@ import telegram
 #from telegram.ext import Updater, MessageHandler, Filters, CallbackQueryHandlery
 from telegram.ext import CallbackContext, CommandHandler
 #from telegram import ParseMode, ReplyKeyboardMarkup, Update, InlineKeyboardButton, InlineKeyboardMarkup, ForceReply
-from telegram.replykeyboardmarkup import ReplyKeyboardMarkup
+from telegram.ext import ReplyKeyboardMarkup
 from telegram.ext import Update
 from telegram.ext import InlineKeyboardButton
 from telegram.ext import ReplyKeyboardMarkup
