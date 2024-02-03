@@ -3,7 +3,7 @@ import logging
 
 import telegram
 #from telegram.ext import Updater, MessageHandler, Filters, CallbackQueryHandlery
-from telegram import CallbackContext, CommandHandler
+from telegram.ext import CallbackContext, CommandHandler
 #from telegram import ParseMode, ReplyKeyboardMarkup, Update, InlineKeyboardButton, InlineKeyboardMarkup, ForceReply
 from telegram import ReplyKeyboardMarkup
 from telegram import Update
