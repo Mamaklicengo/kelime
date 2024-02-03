@@ -1,10 +1,11 @@
 # -*- coding: utf-8 -*-
 import logging
+
 import telegram
 from telegram.ext import Updater, MessageHandler, Filters, CallbackQueryHandler
 from telegram.ext import CallbackContext, CommandHandler
 from telegram import ParseMode, ReplyKeyboardMarkup, Update, InlineKeyboardButton, InlineKeyboardMarkup, ForceReply, ParseMode
-from telegram import Chat
+
 from game import Game
 import settings
 import sqlite3 as sql
@@ -13,7 +14,10 @@ logger = None
 
 games = {}
 
-
+db = sql.connect("users.db")
+vt = db.cursor()
+vt.execute("CREATE TABLE IF NOT EXISTS Users(userid INT, username TEXT, rating INT)")
+db.commit()
 def get_or_create_game(chat_id: int) -> Game:
     global games
     game = games.get(chat_id, None)
@@ -35,10 +39,10 @@ def setup_logger():
 
 
 def help(update, context):
-    update.message.reply_text('Mövcud əmrlər:\n' +
-                              '/basla - 🤓Yeni oyun başladmaq\n' +
-                              '/master - 👨🏻‍💻Aparıcı olmaq\n' +
-                              '/rating - ⚕️Qrup üzrə reytinq', reply_to_message_id=True)
+    update.message.reply_text('DeerWords Komut Listesi:\n' +
+                              '/basla - Yeni Bir Oyun Başlatın\n' +
+                              '/master - Sunucu Olmak\n' +
+                              '/rating - Skor Tablosu', reply_to_message_id=True)
 
 
 def button(update, context):
@@ -64,14 +68,13 @@ def button(update, context):
 def command_start(update, context: CallbackContext):
     if update.effective_chat.type == "private":
         
-        addme = InlineKeyboardButton(text="🤓 Məni Gurupnuza Əlavə Edin", url="https://t.me/BSWorldoyunbot?startgroup=a")
-        sohbet = InlineKeyboardButton(text="⚕️ Support", url="https://t.me/BLACK_MMC")
-        oyun = InlineKeyboardButton(text="🐈 Söhbət Gurupmuz", url="https://t.me/Cat_House_Gurups")
-        admin = InlineKeyboardButton(text="👨🏻‍💻 Sahib", url="https://t.me/F_r_o_z_e_d_i")
+        addme = InlineKeyboardButton(text="🕹Beni Bir Gruba Ekleyin!", url="https://t.me/MJsessizSinemaBot?startgroup=a")
+        sohbet = InlineKeyboardButton(text="📣 𝖢𝗁𝖺𝗇𝗇𝖾𝗅 📣", url="https://t.me/suskunlarkanali")
+        admin = InlineKeyboardButton(text="🗯 𝖮𝗐𝗇𝖾𝗋 🗯", url="https://t.me/sessizlerkurucu")
 
-        keyboard = [[addme],[sohbet],[oyun],[admin]]
+        keyboard = [[addme],[sohbet],[admin]]
         reply_markup = InlineKeyboardMarkup(keyboard)
-        update.message.reply_text('🙄 Şəxsidə oyun olmaz!', reply_to_message_id=True, reply_markup=reply_markup)
+        update.message.reply_text('Özel Mesajda Oyun Başlatılamaz!', reply_to_message_id=True, reply_markup=reply_markup)
     else:
         chat_id = update.message.chat.id
         user_id = update.message.from_user.id
@@ -85,7 +88,7 @@ def command_start(update, context: CallbackContext):
         game = get_or_create_game(chat_id)
         game.start()
 
-        update.message.reply_text('Söz Oyunu Başladı🤓'.format(username), reply_to_message_id=True)
+        update.message.reply_text('Sessiz sinema Oyunu Başladı📣'.format(username), reply_to_message_id=True)
 
         set_master(update, context)
 
@@ -102,13 +105,13 @@ def set_master(update, context):
 
     game.set_master(update.message.from_user.id)
 
-    show_word_btn = InlineKeyboardButton("👻Sözə bax", callback_data='show_word')
-    change_word_btn = InlineKeyboardButton("♻️Sözü dəyiş", callback_data='change_word')
+    show_word_btn = InlineKeyboardButton("🔔Kelimeyi Göster", callback_data='show_word')
+    change_word_btn = InlineKeyboardButton("❗Kelimeyi Değiştir", callback_data='change_word')
 
     keyboard = [[show_word_btn], [change_word_btn]]
     reply_markup = InlineKeyboardMarkup(keyboard)
 
-    update.message.reply_text('[{}](tg://user?id={}) sözü başa salır'.format(username,user_id), reply_to_message_id=True, reply_markup=reply_markup, parse_mode=ParseMode.MARKDOWN)
+    update.message.reply_text('Sıradaki Oyuncu [{}](tg://user?id={})'.format(username,user_id), reply_to_message_id=True, reply_markup=reply_markup, parse_mode=ParseMode.MARKDOWN)
 
 
 def command_master(update: Update, context):
@@ -121,7 +124,7 @@ def command_master(update: Update, context):
         return
 
     if not game.is_master_time_left():
-        update.message.reply_text('Aparıcı olmaq üçün {} saniyə qalıb'.format(game.get_master_time_left()),
+        update.message.reply_text('Lider olmak için {} saniye kaldı'.format(game.get_master_time_left()),
                                   reply_to_message_id=True)
         return
 
@@ -203,10 +206,11 @@ def is_word_answered(update, context):
     word = game.get_current_word()
 
     if game.is_word_answered(user_id, text):
-        update.message.reply_text('*{}* sözünü [{}](tg://user?id={}) tapdı✅'.format(word, username,user_id), reply_to_message_id=True, parse_mode=ParseMode.MARKDOWN)
+        update.message.reply_text('*{}* Kelimesi [{}](tg://user?id={}) Tarafından Doğru Bir Şekilde Tahmin Edildi✅'.format(word, username,user_id), reply_to_message_id=True, parse_mode=ParseMode.MARKDOWN)
 
         game.update_rating(user_id, username)
-
+        vt.execute("SELECT * FROM Users WHERE userid = user_id)
+        i
         set_master(update, context)
 
     logger.info('Guessing word,'
