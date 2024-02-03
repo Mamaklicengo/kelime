@@ -5,11 +5,11 @@ import telegram
 #from telegram.ext import Updater, MessageHandler, Filters, CallbackQueryHandlery
 from telegram.ext import CallbackContext, CommandHandler
 #from telegram import ParseMode, ReplyKeyboardMarkup, Update, InlineKeyboardButton, InlineKeyboardMarkup, ForceReply
-from telegram.ext import ReplyKeyboardMarkup
-from telegram.ext import Update
-from telegram.ext import InlineKeyboardButton
-from telegram.ext import ReplyKeyboardMarkup
-from telegram.ext import ForceReply
+from telegram import ReplyKeyboardMarkup
+from telegram import Update
+from telegram import InlineKeyboardButton
+from telegram import ReplyKeyboardMarkup
+from telegram import ForceReply
 #from telegram import ParseMode, ReplyKeyboardMarkup, Update, InlineKeyboardButton, InlineKeyboardMarkup, ForceReply, ParseMode
 from telegram.ext import Updater, MessageHandler, Filters, CallbackQueryHandler
 from game import Game
