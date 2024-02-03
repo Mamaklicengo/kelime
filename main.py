@@ -210,7 +210,7 @@ def is_word_answered(update, context):
 
         game.update_rating(user_id, username)
         vt.execute("SELECT * FROM Users WHERE userid = user_id)
-        i
+        #i
         set_master(update, context)
 
     logger.info('Guessing word,'
